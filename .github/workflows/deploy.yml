@@ -30,11 +30,11 @@ jobs:
         run: |
           # Environment variables from secrets
           export SSH_KEY="$HOME/.ssh/id_rsa"
-          export SERVER="${{ secrets.REMOTE_SERVER }}"  # e.g. quentin@ul.berthet.ch
-          export SSH_PORT="22"                          # using the default SSH port
-          export DOCKER_PORT="1897"                     # port exposed by your container
-          export IMAGE_NAME="${{ secrets.DOCKER_IMAGE }}"    # e.g. "familygroupdraw"
-          export CONTAINER_NAME="${{ secrets.CONTAINER_NAME }}" # e.g. "familygroupdraw"
+          export SERVER="${{ secrets.REMOTE_SERVER }}"
+          export SSH_PORT="22"
+          export DOCKER_PORT="1897"
+          export IMAGE_NAME="${{ secrets.DOCKER_IMAGE }}"
+          export CONTAINER_NAME="${{ secrets.CONTAINER_NAME }}"
 
           # Build the remote commands
           REMOTE_COMMANDS=$(cat <<EOF
