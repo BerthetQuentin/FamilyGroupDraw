@@ -99,7 +99,8 @@ function drawLots() {
   const ul = document.createElement("ul");
   assignments.forEach(({ giver, receiver }) => {
     const li = document.createElement("li");
-    li.textContent = `${giver.name} → ${receiver.name}`;
+    // Add the group in parentheses
+    li.textContent = `${giver.name} (${giver.group}) → ${receiver.name} (${receiver.group})`;
     ul.appendChild(li);
   });
   resultsDiv.appendChild(ul);
