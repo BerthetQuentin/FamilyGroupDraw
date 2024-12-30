@@ -1,0 +1,72 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1) Check out the repository
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      # 2) Set up SSH key
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # Optional (not recommended in production): Disable strict host key checking
+          echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+      # 3) Deploy over SSH
+      - name: Deploy
+        run: |
+          # Assign environment variables from GitHub Secrets
+          export SSH_KEY="$HOME/.ssh/id_rsa"
+          export SERVER="${{ secrets.REMOTE_SERVER }}"
+          export PORT="${{ secrets.REMOTE_PORT }}"
+          export IMAGE_NAME="${{ secrets.DOCKER_IMAGE }}"
+          export CONTAINER_NAME="${{ secrets.CONTAINER_NAME }}"
+
+          # Inline deployment script
+          REMOTE_COMMANDS=$(cat <<EOF
+            echo "Finding the container associated with the image '${IMAGE_NAME}'..."
+            CONTAINER_ID=\$(sudo docker ps -a -q --filter "ancestor=${IMAGE_NAME}")
+
+            if [ -n "\$CONTAINER_ID" ]; then
+              echo "Stopping and removing the container..."
+              sudo docker stop \$CONTAINER_ID
+              sudo docker rm \$CONTAINER_ID
+            else
+              echo "No container found for the image '${IMAGE_NAME}'."
+            fi
+
+            echo "Removing the current Docker image '${IMAGE_NAME}'..."
+            IMAGE_ID=\$(sudo docker images -q ${IMAGE_NAME})
+            if [ -n "\$IMAGE_ID" ]; then
+              sudo docker rmi \$IMAGE_ID
+            else
+              echo "No image found with the name '${IMAGE_NAME}'."
+            fi
+
+            echo "Pulling the latest code from the repository..."
+            cd ~/portfolio && git pull
+
+            echo "Building a new Docker image..."
+            sudo docker build -t ${IMAGE_NAME} .
+
+            echo "Running the new container..."
+            sudo docker run -d --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}
+          EOF
+          )
+
+          echo "Connecting to the server and deploying..."
+          ssh -i "$SSH_KEY" "$SERVER" "$REMOTE_COMMANDS"
+
+          echo "Deployment completed!"
