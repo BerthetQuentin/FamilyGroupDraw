@@ -1,6 +1,6 @@
 FROM node:18 AS builder
 WORKDIR /app
-COPY . /app
+COPY ./app /app
 
 FROM nginx:alpine
 COPY --from=builder /app /usr/share/nginx/html
