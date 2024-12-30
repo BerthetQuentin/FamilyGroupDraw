@@ -38,12 +38,42 @@ function updateGroupsList() {
   const groupsList = document.getElementById("groups-list");
   groupsList.innerHTML = "";
 
+  // 1) Create an object that will store members by group
+  const groupedByGroup = {};
   members.forEach((member) => {
-    const li = document.createElement("li");
-    li.textContent = `${member.name} (Groupe : ${member.group})`;
-    groupsList.appendChild(li);
+    // If this group doesn't exist yet, initialize it
+    if (!groupedByGroup[member.group]) {
+      groupedByGroup[member.group] = [];
+    }
+    // Add the member's name to the array corresponding to its group
+    groupedByGroup[member.group].push(member.name);
   });
+
+  // 2) Traverse each group to create a sub-list
+  for (const groupName in groupedByGroup) {
+    // Create the main <li> element for the group
+    const liGroup = document.createElement("li");
+    liGroup.style.listStyle = "none"; // Optional: removes the default bullet for the group
+
+    // Create a title for the group
+    const groupTitle = document.createElement("strong");
+    groupTitle.textContent = `${groupName}`;
+    liGroup.appendChild(groupTitle);
+
+    // 3) Create a nested <ul> for the member names
+    const subUl = document.createElement("ul");
+    groupedByGroup[groupName].forEach((memberName) => {
+      const subLi = document.createElement("li");
+      subLi.textContent = memberName;
+      subUl.appendChild(subLi);
+    });
+    liGroup.appendChild(subUl);
+
+    // 4) Append it all to the main list
+    groupsList.appendChild(liGroup);
+  }
 }
+
 
 /**
  * Start the draw according to the constraints
@@ -69,7 +99,8 @@ function drawLots() {
   const ul = document.createElement("ul");
   assignments.forEach(({ giver, receiver }) => {
     const li = document.createElement("li");
-    li.textContent = `${giver.name} → ${receiver.name}`;
+    // Add the group in parentheses
+    li.textContent = `${giver.name} (${giver.group}) → ${receiver.name} (${receiver.group})`;
     ul.appendChild(li);
   });
   resultsDiv.appendChild(ul);
