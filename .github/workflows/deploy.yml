@@ -31,7 +31,7 @@ jobs:
           # Assign environment variables from GitHub Secrets
           export SSH_KEY="$HOME/.ssh/id_rsa"
           export SERVER="${{ secrets.REMOTE_SERVER }}"
-          export PORT="{{ secrets.REMOTE_PORT}}"
+          export PORT="{{ secrets.REMOTE_PORT }}"
           export IMAGE_NAME="${{ secrets.DOCKER_IMAGE }}"
           export CONTAINER_NAME="${{ secrets.CONTAINER_NAME }}"
 
