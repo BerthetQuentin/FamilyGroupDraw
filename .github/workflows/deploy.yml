@@ -21,8 +21,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # Add the remote server's host key to known_hosts for secure host verification
-          ssh-keyscan -p "${{ secrets.REMOTE_PORT }}" -H "${{ secrets.REMOTE_SERVER }}" >> ~/.ssh/known_hosts
+          # Add the remote server's host key to known_hosts on default SSH port 22
+          ssh-keyscan -p 22 -H "ul.berthet.ch" >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
       # 3) Deploy over SSH
@@ -30,8 +30,8 @@ jobs:
         run: |
           # Assign environment variables from GitHub Secrets
           export SSH_KEY="$HOME/.ssh/id_rsa"
-          export SERVER="${{ secrets.REMOTE_SERVER }}"
-          export PORT="${{ secrets.REMOTE_PORT }}"
+          export SERVER="${{ secrets.REMOTE_SERVER }}"    # e.g. quentin@ul.berthet.ch
+          export PORT="1897"                               # Port for Docker container
           export IMAGE_NAME="${{ secrets.DOCKER_IMAGE }}"
           export CONTAINER_NAME="${{ secrets.CONTAINER_NAME }}"
 
@@ -62,11 +62,12 @@ jobs:
             echo "Building a new Docker image..."
             sudo docker build -t ${IMAGE_NAME} .
 
-            echo "Running the new container..."
+            echo "Running the new container on port ${PORT}..."
             sudo docker run -d --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}
           EOF
           )
 
           echo "Connecting to the server and deploying..."
-          ssh -i "$SSH_KEY" "$SERVER" "$REMOTE_COMMANDS"
+          # Use the default SSH port 22 unless your server is really on a custom SSH port
+          ssh -i "$SSH_KEY" -p 22 "$SERVER" "$REMOTE_COMMANDS"
           echo "Deployment completed!"
