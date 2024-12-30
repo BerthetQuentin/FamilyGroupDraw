@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Group Draw</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Family Group Draw</h1>
+
+    <div class="group">
+      <label for="member-name">Add Member</label>
+      <input type="text" id="member-name" placeholder="Enter member name">
+      <label for="group-name">Group</label>
+      <input type="text" id="group-name" placeholder="Enter group name" value="">
+      <button onclick="addMember()">Add Member</button>
+    </div>
+
+    <ul id="groups-list">
+      <!-- Groups will be listed here -->
+    </ul>
+
+    <button onclick="drawLots()">Draw Lots</button>
+
+    <div id="results" class="results">
+      <!-- Results will appear here -->
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
