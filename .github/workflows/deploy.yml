@@ -21,9 +21,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # Optional (not recommended in production): Disable strict host key checking
-          echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
       # 3) Deploy over SSH
       - name: Deploy
         run: |
