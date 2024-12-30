@@ -1,33 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Family Group Draw</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="container">
-    <h1>Family Group Draw</h1>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tirage au Sort de Groupes</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tirage au Sort (Groupes)</h1>
 
-    <div class="group">
-      <label for="member-name">Add Member</label>
-      <input type="text" id="member-name" placeholder="Enter member name">
-      <label for="group-name">Group</label>
-      <input type="text" id="group-name" placeholder="Enter group name" value="">
-      <button onclick="addMember()">Add Member</button>
+      <div class="form-group">
+        <label for="member-name">Nom</label>
+        <input type="text" id="member-name" placeholder="Entrez le nom du membre" />
+
+        <label for="group-name">Groupe</label>
+        <input type="text" id="group-name" placeholder="Entrez le nom du groupe" />
+
+        <button class="btn" onclick="addMember()">Ajouter</button>
+      </div>
+
+      <ul id="groups-list"></ul>
+
+      <button class="btn-draw" onclick="drawLots()">Tirage !</button>
+
+      <div id="results" class="results"></div>
     </div>
 
-    <ul id="groups-list">
-      <!-- Groups will be listed here -->
-    </ul>
-
-    <button onclick="drawLots()">Draw Lots</button>
-
-    <div id="results" class="results">
-      <!-- Results will appear here -->
-    </div>
-  </div>
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
