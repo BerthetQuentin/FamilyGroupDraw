@@ -2,6 +2,8 @@
 
 This repository contains a simple web application for drawing names among multiple groups without allowing members of the same group to draw each other.
 
+The url : https://familydraw.berthet.ch
+
 ## Getting Started
 
 1. **Clone the repository**  
