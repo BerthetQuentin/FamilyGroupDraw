@@ -1,75 +1,56 @@
 # Family Group Draw
 
-This repository contains a simple web application for drawing names among multiple groups without allowing members of the same group to draw each other.
+Application web de tirage au sort entre plusieurs groupes. Chaque participant donne et reçoit une fois, sans tirage au sein du même groupe ni paire réciproque (A → B et B → A).
 
-The url : https://familydraw.berthet.ch
+L'application utilise uniquement HTML, CSS et JavaScript et s'exécute dans le navigateur. Aucune dépendance à installer, aucun serveur applicatif et aucune étape de build ne sont nécessaires.
 
-## Getting Started
+## Utilisation en local
 
-1. **Clone the repository**  
-   ```bash
-   git clone git@github.com:BerthetQuentin/FamilyGroupDraw.git
-   ```
-
-2. **Open the project**
-    Navigate into the project folder and open the `index.html` file in your web browser:
-    ```bash
-    cd FamilyGroupDraw
-    ```
-    ```bash
-    cd app/
-    ```
-    ```bash
-    open index.html
-    ```
-
-3. **Add members and perform the draw**
-    -   Enter the name of a participant and their group.
-    -   Click `Ajouter` to add them to the list.
-    -   Repeat for as many participants as needed.
-    -   Click `Tirage` to see the resulting assignments if a valid configuration exists.
-
-## How to Contribute
-We welcome contributions to improve the functionality, user experience, and performance of this application!
-
-1.**Fork the repository**
-1. Go to the main repository page.
-2. Click **Fork** (top-right corner) to create your own copy of the repo.
-
-2.**Clone your fork**
 ```bash
-git clone https://github.com/YourUsername/FamilyGroupDraw.git
+git clone https://github.com/BerthetQuentin/FamilyGroupDraw.git
 cd FamilyGroupDraw
 ```
 
-3.**Create a new branch**
-Always create a new branch for your feature or bug fix to keep the `main` branch clean:
-```bash
-git checkout -b feature/my-new-feature
+Ouvrir `app/index.html` dans un navigateur, puis :
+
+1. Saisir le nom d'un participant et son groupe.
+2. Cliquer sur **Ajouter** et répéter pour les autres participants.
+3. Cliquer sur **Tirage !** pour afficher les attributions.
+
+Il faut au moins trois participants pour éviter les paires réciproques. La répartition des groupes doit également permettre un tirage valide.
+
+Les participants et les résultats restent en mémoire dans l'onglet : recharger ou fermer la page les efface.
+
+## Déployer sur Vercel
+
+1. Pousser les modifications sur GitHub.
+2. Dans Vercel, choisir **Add New → Project**, puis importer le dépôt.
+3. Conserver la **Root Directory** à la racine du dépôt (`.`), afin que Vercel lise `vercel.json`.
+4. Cliquer sur **Deploy**.
+
+Le fichier [`vercel.json`](vercel.json) définit les paramètres suivants :
+
+| Paramètre | Valeur |
+| --- | --- |
+| Framework Preset | Other |
+| Build Command | Vide (aucun build) |
+| Install Command | Vide (aucune installation) |
+| Output Directory | `app` |
+
+Seul le contenu de `app/` est publié. Aucune variable d'environnement ni aucun secret GitHub n'est nécessaire. Les déploiements suivants sont gérés par l'intégration Git de Vercel.
+
+Voir la [documentation Vercel sur les sites statiques](https://vercel.com/docs/builds/configure-a-build#skip-build-step) et la [configuration `vercel.json`](https://vercel.com/docs/project-configuration/vercel-json).
+
+## Structure
+
+```text
+app/
+  index.html    # Interface
+  script.js     # Gestion des participants et tirage
+  style.css     # Styles
+vercel.json     # Déploiement statique sur Vercel
 ```
 
-4.**Make changes and commit**
+## Contribuer
 
--   Implement your changes (e.g., JavaScript logic, CSS styling, HTML structure).
--   Add relevant tests or documentation if needed.
--   Commit your changes with a clear commit message:
-    ```bash
-    git add .
-    git commit -m "Add new feature for improved draw logic"
-    ```
-5.**Push your branch and create a Pull Request**
-```bash
-git push origin feature/my-new-feature
-```
-Then, go to your fork on GitHub, select your branch, and click Pull Request. Provide a detailed description of what you changed and why.
-
-6.**Code Review and Merge**
-
--   The repository maintainers will review your Pull Request.
--   Please be prepared to update your code if the reviewers suggest improvements or modifications.
--   Once approved, your changes will be merged into the main repository.
-
-
-
-
-
+Créer une branche, modifier les fichiers dans `app/`, puis vérifier l'ajout de participants et le tirage dans le navigateur avant d'ouvrir une pull request.
